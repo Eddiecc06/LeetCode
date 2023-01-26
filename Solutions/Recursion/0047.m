@@ -1,0 +1,61 @@
+# 47. Permutations II
+https://leetcode.com/problems/permutations-ii/description/
+
+## Problem Description
+
+Given a collection of numbers, nums, that might contain duplicates, return all possible unique permutations in any order.
+
+**Example 1**:
+```
+Input: nums = [1,1,2]
+Output:
+[[1,1,2],
+ [1,2,1],
+ [2,1,1]]
+```
+**Example 2**:
+```
+Input: nums = [1,2,3]
+Output: [[1,2,3],[1,3,2],[2,1,3],[2,3,1],[3,1,2],[3,2,1]]
+```
+
+**Constraints**
+```
+1 <= nums.length <= 8
+-10 <= nums[i] <= 10
+```
+
+## Solution
+
+### _Related Topic_
+    Recusrion
+
+### _C++ Code_
+```cpp
+class Solution {
+public:
+    vector<vector<int>> permuteUnique(vector<int>& nums) {
+        vector<vector<int>> ans;
+        sort(nums.begin(), nums.end());
+        Generate_permutation(nums, 0, ans);
+        return ans;
+    }
+    void Generate_permutation(vector<int> nums, int index, vector<vector<int>> &ans){
+        if(index == nums.size()){
+            ans.push_back(nums);
+            return;
+        }
+        for(int i = index; i < nums.size(); ++i){
+            if(i != index && nums[i] == nums[index])
+                continue;
+            swap(nums[index], nums[i]);
+            Generate_permutation(nums, index+1, ans);
+        }
+        return;
+    }
+};
+```
+
+### _Complexity Anlysis_
+- _Time Complexity_: O(n!)
+- _Space Complexity_：O(1)
