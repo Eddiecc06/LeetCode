@@ -5,9 +5,9 @@ The time complexity of the binary search algorithm is O(log n). The time complex
 This page shows the templates of binary search method.
 Binary search can be used to find :
 1. The number **equals to** the target number
-2. The first number **isn't smaller than** the target number (lower_bound)
+2. The first number **isn't smaller than** the target number 
 3. Tha last number **is smaller than** the target number
-4. The first number **is larger than** the target number (upper_bound)
+4. The first number **is larger than** the target number 
 5. Tha last number **isn't larger than** the target number
 6. Others
 
