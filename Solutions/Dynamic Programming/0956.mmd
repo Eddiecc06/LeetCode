@@ -1,0 +1,79 @@
+# 956. Tallest Billboard
+https://leetcode.com/problems/tallest-billboard/description/
+
+## Problem Description
+
+You are installing a billboard and want it to have the largest height. The billboard will have two steel supports, one on each side. Each steel support must be an equal height.
+
+You are given a collection of rods that can be welded together. For example, if you have rods of lengths 1, 2, and 3, you can weld them together to make a support of length 6.
+
+Return the largest possible height of your billboard installation. If you cannot support the billboard, return 0.
+
+
+**Example 1**:
+```
+Input: rods = [1,2,3,6]
+Output: 6
+Explanation: We have two disjoint subsets {1,2,3} and {6}, which have the same sum = 6.
+```
+**Example 2**:
+```
+Input: rods = [1,2,3,4,5,6]
+Output: 10
+Explanation: We have two disjoint subsets {2,3,5} and {4,6}, which have the same sum = 10.
+```
+**Example 3**:
+```
+Input: rods = [1,2]
+Output: 0
+Explanation: The billboard cannot be supported, so we return 0.
+```
+
+**Constraints**
+```
+1 <= rods.length <= 20
+1 <= rods[i] <= 1000
+sum(rods[i]) <= 5000
+```
+
+## Solution
+
+### _Related Topic_
+   Dynamic Programming, Array
+
+### _C++ Code_
+```cpp
+class Solution {
+  public:
+    int tallestBillboard(vector<int>& rods) {
+      int n = rods.size(), sum = 0, curRod;
+      //The constraint is given : sum(rods[i]) <= 5000
+      // dp[i][j] := maximize the min-height of using rods[0..i) to compose two steels that
+      // Have height difference j
+      
+      for(int i = 0; i < n; ++i)
+        sum += rods[i];
+      vector<vector<int>> dp(n+1, vector<int>(sum+1, -1001));
+      dp[0][0] = 0;
+
+      for(int i = 1; i <= n; ++i){
+        curRod = rods[i-1];
+        for(int diff = 0; diff <= sum - curRod; ++diff){
+          if(dp[i-1][diff] < 0)
+            continue;
+          dp[i][diff] = max(dp[i][diff], dp[i-1][diff]);
+          //Put rods[i-1] to the higher steel
+          dp[i][diff + curRod] = max(dp[i][diff + curRod], dp[i-1][diff]);
+          ////Put rods[i-1] to the lower steel
+          dp[i][abs(diff - curRod)] = max(dp[i][abs(diff - curRod)], dp[i-1][diff] + min(diff, curRod));
+
+        }
+      }
+      return dp[n][0];
+  }
+};
+```
+
+### _Complexity Anlysis_
+- _Time Complexity_: O(n*sum)
+- _Space Complexity_：O(n*sum)
